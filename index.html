@@ -7,342 +7,224 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#06070d;--sf:#0c0d18;--sf2:#101120;--bd:#1a1b2e;--tx:#d4d6f0;--mt:#3a3c52;
-  --p:#7b6cff;--g:#3de87a;--o:#ff8c5a;--r:#ff5a7a;--b:#4ea8ff;--y:#f5c842;
+  --bg:#06070d;--sf:#0c0d18;--sf2:#101120;--bd:#1a1b2e;
+  --tx:#d4d6f0;--mt:#3a3c52;
+  --p:#7b6cff;--g:#3de87a;--o:#ff8c5a;--r:#ff5a7a;
+  --b:#4ea8ff;--y:#f5c842;--teal:#2dd4bf;--pink:#f472b6;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--tx);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
-
-/* 背景グロー */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
-    radial-gradient(ellipse 60% 40% at 10% 10%,rgba(123,108,255,.08) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 50% at 90% 90%,rgba(61,232,122,.06) 0%,transparent 55%),
-    radial-gradient(ellipse 40% 60% at 50% 50%,rgba(255,90,122,.04) 0%,transparent 60%);
+    radial-gradient(ellipse 60% 40% at 10% 10%,rgba(123,108,255,.07) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 90% 90%,rgba(61,232,122,.05) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 60% at 50% 50%,rgba(255,90,122,.03) 0%,transparent 60%);
 }
 
-/* ── HEADER ── */
+/* HEADER */
 header{
   position:sticky;top:0;z-index:200;
   background:rgba(6,7,13,.95);backdrop-filter:blur(24px);
   border-bottom:1px solid var(--bd);
-  padding:0 32px;height:60px;
+  padding:0 28px;height:56px;
   display:flex;align-items:center;justify-content:space-between;
 }
 .logo{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:5px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:17px;letter-spacing:5px;
   background:linear-gradient(110deg,var(--p),var(--g));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
-.header-right{display:flex;align-items:center;gap:12px}
-.phase-indicator{
-  display:flex;align-items:center;gap:8px;
-  font-family:'Syne',sans-serif;font-size:10px;letter-spacing:2px;color:var(--mt);
-}
-.phase-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--mt);
-  transition:background .4s,box-shadow .4s;
-}
-.phase-dot.active{background:var(--g);box-shadow:0 0 8px var(--g)}
-.phase-dot.done{background:var(--p)}
+.phase-bar{display:flex;align-items:center;gap:6px;font-family:'Syne',sans-serif;font-size:10px;letter-spacing:1px;color:var(--mt)}
+.ph{display:flex;align-items:center;gap:5px}
+.ph-dot{width:7px;height:7px;border-radius:50%;background:var(--mt);transition:all .4s}
+.ph-dot.active{background:var(--g);box-shadow:0 0 8px var(--g)}
+.ph-dot.done{background:var(--p)}
+.ph-sep{color:var(--bd);margin:0 2px}
 
-/* ── SETUP ── */
-.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 24px}
-.setup{margin-top:28px}
-.box{
-  background:var(--sf);border:1px solid rgba(123,108,255,.25);
-  border-radius:18px;padding:24px 28px;
-}
-.box-title{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:12px;
-  letter-spacing:3px;color:var(--p);margin-bottom:16px;
-  display:flex;align-items:center;gap:8px;
-}
-.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
-.step{display:flex;align-items:center;gap:12px;font-family:'Syne',sans-serif;font-size:12px;color:var(--tx)}
-.num{
-  width:22px;height:22px;border-radius:50%;flex-shrink:0;
-  background:rgba(123,108,255,.15);border:1px solid var(--p);
-  color:var(--p);font-size:10px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-}
+/* WRAP */
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 20px}
+
+/* SETUP BOX */
+.setup{margin-top:24px}
+.box{background:var(--sf);border:1px solid rgba(123,108,255,.22);border-radius:16px;padding:22px 26px}
+.box-title{font-family:'Syne',sans-serif;font-weight:800;font-size:11px;letter-spacing:3px;color:var(--p);margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.step{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:11px;color:var(--tx)}
+.num{width:20px;height:20px;border-radius:50%;flex-shrink:0;background:rgba(123,108,255,.15);border:1px solid var(--p);color:var(--p);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .step a{color:var(--g);text-decoration:none;border-bottom:1px solid rgba(61,232,122,.3)}
-.ki-row{display:flex;gap:10px}
-.ki{
-  flex:1;padding:11px 16px;background:#08091a;
-  border:1px solid var(--bd);border-radius:10px;
-  color:var(--tx);font-family:'Syne',sans-serif;font-size:13px;outline:none;
-  transition:border-color .3s,box-shadow .3s;
-}
-.ki:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(123,108,255,.12)}
+.ki-row{display:flex;gap:8px}
+.ki{flex:1;padding:10px 14px;background:#08091a;border:1px solid var(--bd);border-radius:9px;color:var(--tx);font-family:'Syne',sans-serif;font-size:12px;outline:none;transition:border-color .3s}
+.ki:focus{border-color:var(--p)}
 .ki::placeholder{color:var(--mt)}
-.ks{font-family:'Syne',sans-serif;font-size:11px;margin-top:8px;letter-spacing:1px;min-height:16px}
+.ks{font-family:'Syne',sans-serif;font-size:10px;margin-top:7px;letter-spacing:1px;min-height:15px}
 .ks.ok{color:var(--g)}.ks.warn{color:var(--y)}
-.save-btn{
-  padding:11px 20px;background:linear-gradient(135deg,var(--p),#5e8bff);
-  border:none;border-radius:10px;color:#fff;
-  font-family:'Syne',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;
-  cursor:pointer;white-space:nowrap;transition:all .22s;
-}
-.save-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(123,108,255,.4)}
+.save-btn{padding:10px 18px;background:linear-gradient(135deg,var(--p),#5e8bff);border:none;border-radius:9px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.save-btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(123,108,255,.4)}
 
-/* ── TOPIC INPUT ── */
-.topic-section{margin-top:20px}
-.section-label{
-  font-family:'Syne',sans-serif;font-size:10px;letter-spacing:3px;
-  color:var(--mt);text-transform:uppercase;margin-bottom:10px;
-}
+/* TOPIC */
+.topic-section{margin-top:18px}
+.sec-label{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:8px}
 textarea#topic{
-  width:100%;min-height:90px;padding:18px 20px;
-  background:var(--sf);border:1px solid var(--bd);border-radius:14px;
-  color:var(--tx);font-family:'Noto Serif JP',serif;font-size:15px;line-height:1.7;
+  width:100%;min-height:80px;padding:16px 18px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:13px;
+  color:var(--tx);font-family:'Noto Serif JP',serif;font-size:14px;line-height:1.7;
   resize:none;outline:none;transition:border-color .3s,box-shadow .3s;
 }
-textarea#topic:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(123,108,255,.12)}
+textarea#topic:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(123,108,255,.1)}
 textarea#topic::placeholder{color:var(--mt)}
 
-/* ── ROLE CARDS ── */
-.roles-section{margin-top:20px}
-.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
-@media(max-width:700px){.roles-grid{grid-template-columns:1fr 1fr}}
-.role-card{
+/* ROLES GRID */
+.roles-section{margin-top:18px}
+.roles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+@media(max-width:680px){.roles-grid{grid-template-columns:1fr 1fr}}
+.rc{
   background:var(--sf2);border:1px solid var(--bd);border-radius:12px;
-  padding:14px;transition:border-color .3s;
+  padding:14px;transition:border-color .3s,box-shadow .3s;
+  display:flex;flex-direction:column;gap:8px;
 }
-.role-header{
-  display:flex;align-items:center;gap:8px;margin-bottom:8px;
-}
-.role-icon{font-size:16px;filter:drop-shadow(0 0 4px var(--rc))}
-.role-name{
-  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:2px;color:var(--rc);text-transform:uppercase;
-}
-.role-input{
-  width:100%;background:transparent;border:none;outline:none;
-  color:var(--tx);font-family:'Syne',sans-serif;font-size:11px;
-  border-bottom:1px solid var(--bd);padding-bottom:4px;
-  transition:border-color .3s;
-}
-.role-input:focus{border-color:var(--rc)}
-.role-input::placeholder{color:var(--mt);font-size:10px}
+.rc:hover{border-color:var(--role-c)}
+.rc-head{display:flex;align-items:center;gap:7px}
+.rc-icon{font-size:15px}
+.rc-name{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--role-c);text-transform:uppercase}
+.rc-desc{font-family:'Syne',sans-serif;font-size:10px;color:var(--mt);line-height:1.5;letter-spacing:.3px}
 
-/* ── START BTN ── */
-.start-area{display:flex;gap:12px;margin-top:20px;align-items:center}
+/* START */
+.start-area{display:flex;gap:10px;margin-top:20px;align-items:center}
 .start-btn{
-  padding:14px 36px;
+  padding:13px 32px;
   background:linear-gradient(135deg,var(--p) 0%,var(--r) 50%,var(--o) 100%);
   background-size:200% 100%;
   border:none;border-radius:12px;color:#fff;
-  font-family:'Syne',sans-serif;font-weight:800;font-size:14px;letter-spacing:3px;
-  cursor:pointer;transition:all .3s;
-  box-shadow:0 4px 24px rgba(123,108,255,.35);
+  font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:3px;
+  cursor:pointer;transition:all .3s;box-shadow:0 4px 22px rgba(123,108,255,.3);
 }
-.start-btn:hover:not(:disabled){
-  background-position:100% 0;
-  transform:translateY(-2px);
-  box-shadow:0 8px 32px rgba(123,108,255,.5);
-}
+.start-btn:hover:not(:disabled){background-position:100% 0;transform:translateY(-2px);box-shadow:0 8px 28px rgba(123,108,255,.45)}
 .start-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-.reset-btn{
-  padding:14px 20px;background:transparent;
-  border:1px solid var(--bd);border-radius:12px;
-  color:var(--mt);font-family:'Syne',sans-serif;font-size:12px;
-  cursor:pointer;transition:all .2s;
-}
+.reset-btn{padding:13px 18px;background:transparent;border:1px solid var(--bd);border-radius:12px;color:var(--mt);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;transition:all .2s}
 .reset-btn:hover{border-color:var(--r);color:var(--r)}
-.shortcut{margin-left:auto;font-family:'Syne',sans-serif;font-size:11px;color:var(--mt)}
+.sc{margin-left:auto;font-family:'Syne',sans-serif;font-size:10px;color:var(--mt)}
 
-/* ── DEBATE ARENA ── */
-.arena{
-  position:relative;z-index:1;
-  max-width:1280px;margin:32px auto 0;padding:0 24px;
-}
+/* PROGRESS */
+.prog-wrap{position:relative;z-index:1;max-width:880px;margin:20px auto 0;padding:0 20px}
+.prog-track{height:2px;background:var(--bd);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--g));border-radius:2px;transition:width .7s ease;width:0%}
+.prog-label{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:2px;color:var(--mt);margin-top:7px;text-align:center;min-height:15px}
+
+/* ARENA */
+.arena{position:relative;z-index:1;max-width:1300px;margin:28px auto 0;padding:0 20px}
 .arena-title{
-  font-family:'Syne',sans-serif;font-size:11px;letter-spacing:4px;
-  color:var(--mt);text-transform:uppercase;margin-bottom:16px;
+  font-family:'Syne',sans-serif;font-size:10px;letter-spacing:4px;color:var(--mt);
+  text-transform:uppercase;margin-bottom:14px;
   display:flex;align-items:center;gap:10px;
 }
 .arena-title::after{content:'';flex:1;height:1px;background:var(--bd)}
 
-/* 議論パネル */
-.debate-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;
-}
-@media(max-width:900px){.debate-grid{grid-template-columns:1fr}}
+/* DEBATE GRID — 3列 */
+.debate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+@media(max-width:900px){.debate-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr}}
 
-/* 審判パネル */
-.judge-panel{
-  background:linear-gradient(135deg,rgba(12,13,24,.9),rgba(16,17,32,.9));
-  border:1px solid rgba(245,200,66,.2);
-  border-radius:18px;overflow:hidden;
+/* DEBATE CARD */
+.dcard{
+  background:var(--sf);border:1px solid var(--bd);border-radius:15px;
+  overflow:hidden;display:flex;flex-direction:column;min-height:190px;
   transition:border-color .4s,box-shadow .4s;
-  position:relative;
 }
-.judge-panel.active{
-  border-color:var(--y);
-  box-shadow:0 0 40px rgba(245,200,66,.15);
+.dcard.loading{border-color:var(--rc);box-shadow:0 0 18px color-mix(in srgb,var(--rc) 14%,transparent)}
+.dcard.done{border-color:color-mix(in srgb,var(--rc) 38%,transparent)}
+.dcard.pending{opacity:.45}
+.dh{padding:13px 16px 10px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px}
+.di{font-size:15px}
+.dn{font-family:'Syne',sans-serif;font-weight:800;font-size:10px;letter-spacing:2px;color:var(--rc);text-transform:uppercase}
+.dm{margin-left:auto;font-family:'Syne',sans-serif;font-size:8px;color:var(--mt);padding:2px 5px;border-radius:3px;border:1px solid var(--bd);background:rgba(255,255,255,.02);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dsp{width:6px;height:6px;border-radius:50%;background:var(--rc);animation:pulse 1s infinite;margin-left:3px}
+.db{padding:14px 16px;flex:1;overflow-y:auto;max-height:260px}
+.db p{font-size:12px;line-height:1.8;color:#9294b4;white-space:pre-wrap}
+.db .er{color:#ff7070;font-family:'Syne',sans-serif;font-size:11px;line-height:1.7;background:rgba(255,90,90,.06);border:1px solid rgba(255,90,90,.16);border-radius:7px;padding:9px 11px}
+.db .waiting{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:2px;color:var(--mt);text-align:center;margin-top:40px}
+
+/* SKELETON */
+.sk{display:flex;flex-direction:column;gap:7px}
+.sl{height:7px;border-radius:4px;background:linear-gradient(90deg,#181924 25%,#20213a 50%,#181924 75%);background-size:200% 100%;animation:shimmer 1.6s infinite}
+
+/* JUDGE PANEL */
+.judge-wrap{
+  background:linear-gradient(135deg,rgba(10,11,20,.95),rgba(14,15,28,.95));
+  border:1px solid rgba(245,200,66,.18);border-radius:18px;
+  overflow:hidden;position:relative;transition:border-color .5s,box-shadow .5s;
+  margin-bottom:48px;
 }
-.judge-glow{
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--y),transparent);
-  opacity:0;transition:opacity .4s;
-}
-.judge-panel.active .judge-glow{opacity:1;animation:scan 2s infinite}
-.judge-header{
-  padding:18px 24px 14px;
-  border-bottom:1px solid rgba(245,200,66,.15);
-  display:flex;align-items:center;gap:10px;
+.judge-wrap.active{border-color:var(--y);box-shadow:0 0 48px rgba(245,200,66,.12)}
+.jglow{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--y),transparent);opacity:0;transition:opacity .5s}
+.judge-wrap.active .jglow{opacity:1;animation:scan 2.5s infinite}
+.jhead{
+  padding:18px 24px;border-bottom:1px solid rgba(245,200,66,.12);
+  display:flex;align-items:center;gap:12px;
   background:rgba(245,200,66,.03);
 }
-.judge-crown{font-size:22px;filter:drop-shadow(0 0 8px var(--y))}
-.judge-title{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:14px;
-  letter-spacing:3px;color:var(--y);text-transform:uppercase;
-}
-.judge-subtitle{
-  margin-left:auto;font-family:'Syne',sans-serif;font-size:9px;
-  color:rgba(245,200,66,.4);letter-spacing:1px;
-}
-.judge-spinner{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--y);animation:pulse 1s infinite;margin-left:6px;
-}
-.judge-body{
-  padding:22px 24px;min-height:160px;
-}
-.judge-body p{
-  font-size:15px;line-height:1.9;color:#d8c87a;
-  font-family:'Noto Serif JP',serif;white-space:pre-wrap;
-}
-.judge-waiting{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  height:120px;gap:12px;
-}
-.judge-waiting-text{
-  font-family:'Syne',sans-serif;font-size:11px;letter-spacing:2px;color:var(--mt);
-}
-.waiting-dots{display:flex;gap:6px}
-.waiting-dots span{
-  width:6px;height:6px;border-radius:50%;background:var(--mt);
-  animation:pulse 1.4s infinite;
-}
-.waiting-dots span:nth-child(2){animation-delay:.2s}
-.waiting-dots span:nth-child(3){animation-delay:.4s}
+.j-crown{font-size:22px;filter:drop-shadow(0 0 10px var(--y))}
+.j-title{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;letter-spacing:3px;color:var(--y);text-transform:uppercase}
+.j-sub{margin-left:auto;font-family:'Syne',sans-serif;font-size:9px;color:rgba(245,200,66,.35);letter-spacing:1px}
+.jspin{width:8px;height:8px;border-radius:50%;background:var(--y);animation:pulse 1s infinite;margin-left:6px}
+.jbody{padding:28px 28px;min-height:200px}
 
-/* 議論カード */
-.dcard{
-  background:var(--sf);border:1px solid var(--bd);border-radius:16px;
-  overflow:hidden;display:flex;flex-direction:column;min-height:200px;
-  transition:border-color .4s,box-shadow .4s;
+/* 結論ブロック */
+.verdict{
+  background:linear-gradient(135deg,rgba(245,200,66,.06),rgba(123,108,255,.04));
+  border:1px solid rgba(245,200,66,.2);border-radius:14px;
+  padding:24px 26px;margin-top:20px;
 }
-.dcard.loading{
-  border-color:var(--rc);
-  box-shadow:0 0 20px color-mix(in srgb,var(--rc) 15%,transparent);
-}
-.dcard.done{border-color:color-mix(in srgb,var(--rc) 40%,transparent)}
-.dcard-header{
-  padding:14px 18px 10px;border-bottom:1px solid var(--bd);
+.verdict-label{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:11px;
+  letter-spacing:3px;color:var(--y);margin-bottom:14px;
   display:flex;align-items:center;gap:8px;
 }
-.dcard-icon{font-size:15px;color:var(--rc);filter:drop-shadow(0 0 4px var(--rc))}
-.dcard-name{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:11px;
-  letter-spacing:3px;color:var(--rc);text-transform:uppercase;
-}
-.dcard-model{
-  margin-left:auto;font-family:'Syne',sans-serif;font-size:8px;
-  color:var(--mt);padding:2px 6px;border-radius:3px;
-  border:1px solid var(--bd);background:rgba(255,255,255,.02);
-  max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.dcard-spinner{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--rc);animation:pulse 1s infinite;margin-left:3px;
-}
-.dcard-body{padding:16px 18px;flex:1;overflow-y:auto;max-height:300px}
-.dcard-body p{font-size:13px;line-height:1.8;color:#9a9cb8;white-space:pre-wrap}
-.dcard-body .er{
-  color:#ff7070;font-family:'Syne',sans-serif;font-size:11px;line-height:1.8;
-  background:rgba(255,90,90,.06);border:1px solid rgba(255,90,90,.18);
-  border-radius:8px;padding:10px 12px;
-}
+.verdict-label::before{content:'';width:24px;height:2px;background:var(--y);border-radius:1px}
+.verdict p{font-size:15px;line-height:2;color:#e8d87a;font-family:'Noto Serif JP',serif;white-space:pre-wrap}
 
-/* skeleton */
-.sk{display:flex;flex-direction:column;gap:8px}
-.sl{
-  height:8px;border-radius:4px;
-  background:linear-gradient(90deg,#181924 25%,#20213a 50%,#181924 75%);
-  background-size:200% 100%;animation:shimmer 1.6s infinite;
-}
+/* WAITING */
+.j-waiting{display:flex;flex-direction:column;align-items:center;justify-content:center;height:140px;gap:12px}
+.j-wait-dots{display:flex;gap:6px}
+.j-wait-dots span{width:6px;height:6px;border-radius:50%;background:rgba(245,200,66,.3);animation:pulse 1.4s infinite}
+.j-wait-dots span:nth-child(2){animation-delay:.2s}
+.j-wait-dots span:nth-child(3){animation-delay:.4s}
+.j-wait-text{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:2px;color:var(--mt)}
 
-/* 進捗バー */
-.progress-bar{
-  position:relative;z-index:1;max-width:860px;margin:24px auto 0;padding:0 24px;
-}
-.progress-track{
-  height:3px;background:var(--bd);border-radius:2px;overflow:hidden;
-}
-.progress-fill{
-  height:100%;background:linear-gradient(90deg,var(--p),var(--g));
-  border-radius:2px;transition:width .6s ease;width:0%;
-}
-.progress-label{
-  font-family:'Syne',sans-serif;font-size:10px;letter-spacing:2px;
-  color:var(--mt);margin-top:8px;text-align:center;min-height:16px;
-}
-
-/* empty */
-.empty-state{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:56px 24px;text-align:center;
-}
-.ei{font-size:26px;display:flex;gap:12px;margin-bottom:14px}
+/* EMPTY */
+.empty-state{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.ei{font-size:24px;display:flex;gap:10px;margin-bottom:14px}
 .ei span{animation:float 3s ease-in-out infinite}
-.ei span:nth-child(2){animation-delay:.3s}
-.ei span:nth-child(3){animation-delay:.6s}
-.ei span:nth-child(4){animation-delay:.9s}
+.ei span:nth-child(2){animation-delay:.25s}.ei span:nth-child(3){animation-delay:.5s}
+.ei span:nth-child(4){animation-delay:.75s}.ei span:nth-child(5){animation-delay:1s}.ei span:nth-child(6){animation-delay:1.25s}
 .et{font-family:'Syne',sans-serif;font-size:11px;letter-spacing:3px;color:var(--mt)}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.15}}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-@keyframes judgeIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+@keyframes judgeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 .fi{animation:fadeIn .4s ease forwards}
 .ji{animation:judgeIn .5s ease forwards}
-
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
-  <div>
-    <div class="logo">TENBIN AI</div>
-  </div>
-  <div class="header-right">
-    <div class="phase-indicator">
-      <span class="phase-dot" id="pd1" title="議論フェーズ"></span>
-      <span style="letter-spacing:1px">議論</span>
-      <span style="color:var(--bd);margin:0 4px">▶</span>
-      <span class="phase-dot" id="pd2" title="審判フェーズ"></span>
-      <span style="letter-spacing:1px">審判</span>
-      <span style="color:var(--bd);margin:0 4px">▶</span>
-      <span class="phase-dot" id="pd3" title="結論フェーズ"></span>
-      <span style="letter-spacing:1px">結論</span>
-    </div>
+  <div><div class="logo">TENBIN AI</div></div>
+  <div class="phase-bar">
+    <div class="ph"><span class="ph-dot" id="pd1"></span><span>議論</span></div>
+    <span class="ph-sep">▶</span>
+    <div class="ph"><span class="ph-dot" id="pd2"></span><span>審判</span></div>
+    <span class="ph-sep">▶</span>
+    <div class="ph"><span class="ph-dot" id="pd3"></span><span>結論</span></div>
   </div>
 </header>
 
-<!-- SETUP -->
 <div class="wrap">
+  <!-- API KEY -->
   <div class="setup">
     <div class="box">
       <div class="box-title">⚙ APIキー設定</div>
@@ -360,14 +242,14 @@ textarea#topic::placeholder{color:var(--mt)}
   </div>
 
   <!-- TOPIC -->
-  <div class="topic-section" style="margin-top:20px">
-    <div class="section-label">議論テーマ</div>
+  <div class="topic-section">
+    <div class="sec-label">議論テーマ</div>
     <textarea id="topic" placeholder="例：「AIは人間の仕事を奪うか？」&#10;例：「週4日勤務は生産性を上げるか？」&#10;例：「SNSは民主主義に有害か？」"></textarea>
   </div>
 
   <!-- ROLES -->
   <div class="roles-section">
-    <div class="section-label" style="margin-bottom:10px">各AIの役割（変更可）</div>
+    <div class="sec-label">参加メンバー（6役 + 審判）</div>
     <div class="roles-grid" id="rolesGrid"></div>
   </div>
 
@@ -375,118 +257,140 @@ textarea#topic::placeholder{color:var(--mt)}
   <div class="start-area">
     <button class="start-btn" id="startBtn" onclick="startDebate()">⚡ 議論スタート</button>
     <button class="reset-btn" onclick="resetAll()">↺ リセット</button>
-    <span class="shortcut">Ctrl+Enter でも開始</span>
+    <span class="sc">Ctrl+Enter でも開始</span>
   </div>
 </div>
 
 <!-- PROGRESS -->
-<div class="progress-bar">
-  <div class="progress-track"><div class="progress-fill" id="pf"></div></div>
-  <div class="progress-label" id="pl"></div>
+<div class="prog-wrap">
+  <div class="prog-track"><div class="prog-fill" id="pf"></div></div>
+  <div class="prog-label" id="pl"></div>
 </div>
 
 <!-- EMPTY STATE -->
 <div id="emptyState" class="empty-state">
-  <div class="ei"><span>⚡</span><span>🔥</span><span>⚔️</span><span>⚖️</span></div>
+  <div class="ei"><span>🎓</span><span>🔍</span><span>😈</span><span>👤</span><span>📊</span><span>⚖️</span></div>
   <div class="et">テーマを入力して議論をスタートさせてください</div>
 </div>
 
 <!-- ARENA -->
 <div class="arena" id="arena" style="display:none">
-  <div class="arena-title">フェーズ 1 ── 議論</div>
+  <div class="arena-title">フェーズ 1 ── 6者による議論</div>
   <div class="debate-grid" id="debateGrid"></div>
 
-  <div class="arena-title" id="judgeTitle" style="display:none">フェーズ 2 ── 審判の結論</div>
-  <div class="judge-panel" id="judgePanel" style="display:none">
-    <div class="judge-glow"></div>
-    <div class="judge-header">
-      <span class="judge-crown">⚖️</span>
+  <div class="arena-title" id="judgeTitle" style="display:none">フェーズ 2 ── 審判による最終結論</div>
+  <div class="judge-wrap" id="judgeWrap" style="display:none">
+    <div class="jglow"></div>
+    <div class="jhead">
+      <span class="j-crown">⚖️</span>
       <div>
-        <div class="judge-title">審判 AI</div>
+        <div class="j-title">審判 AI — 最終結論</div>
       </div>
-      <span class="judge-subtitle" id="judgeModel">待機中</span>
-      <span class="judge-spinner" id="judgeSpin" style="display:none"></span>
+      <span class="j-sub" id="judgeModel">待機中</span>
+      <span class="jspin" id="jspin" style="display:none"></span>
     </div>
-    <div class="judge-body" id="judgeBody">
-      <div class="judge-waiting">
-        <div class="waiting-dots"><span></span><span></span><span></span></div>
-        <div class="judge-waiting-text">全AIの議論完了を待っています...</div>
+    <div class="jbody" id="jbody">
+      <div class="j-waiting">
+        <div class="j-wait-dots"><span></span><span></span><span></span></div>
+        <div class="j-wait-text">全メンバーの議論完了を待っています...</div>
       </div>
     </div>
   </div>
 </div>
 
-<div style="height:60px"></div>
-
 <script>
-// ────────────────────────────────────
-// 設定
-// ────────────────────────────────────
-const OR_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const KEY_STORE = 'tenbin_key';
-
-const DEFAULT_ROLES = [
-  { id:'a', icon:'⚡', color:'#ff7c5c', label:'賛成派', stance:'このテーマに強く賛成する論者として、具体的な根拠と事例を挙げて主張してください。反論も想定した上で説得力ある意見を述べてください。' },
-  { id:'b', icon:'🌊', color:'#4ea8ff', label:'反対派', stance:'このテーマに強く反対する論者として、具体的な根拠と事例を挙げて主張してください。反論も想定した上で説得力ある意見を述べてください。' },
-  { id:'c', icon:'🌿', color:'#3de87a', label:'中立・分析', stance:'このテーマについて中立の立場から、賛成・反対両方の論点を客観的に分析してください。データや研究結果を交えた冷静な分析をしてください。' },
+// ════════════════════════════════════════
+// 6役の定義
+// ════════════════════════════════════════
+const ROLES = [
+  {
+    id:'expert', icon:'🎓', color:'#7b6cff', label:'専門家',
+    desc:'知識・理論・事例で根拠を与える',
+    system:`あなたはこのテーマに精通した専門家です。
+学術的知識、歴史的事例、具体的なデータを用いて深みのある分析を行ってください。
+感情論を避け、専門的視点から論理的に意見を述べてください。300〜400文字程度。`,
+  },
+  {
+    id:'factcheck', icon:'🔍', color:'#2dd4bf', label:'ファクトチェッカー',
+    desc:'事実・データ・統計で議論を検証する',
+    system:`あなたは厳格なファクトチェッカーです。
+このテーマに関して確認された事実、信頼できる統計データ、具体的な数字を示してください。
+「よくある誤解」や「感情的主張」を指摘し、事実に基づいた正確な情報を提供してください。300〜400文字程度。`,
+  },
+  {
+    id:'devil', icon:'😈', color:'#ff5a7a', label:'悪魔の代弁者',
+    desc:'あえて逆張り・穴を突く',
+    system:`あなたは悪魔の代弁者です。
+このテーマの「常識的な意見」に対してあえて反論し、見落とされがちなリスク・矛盾・欠陥を鋭く指摘してください。
+挑発的でも構いません。議論を鍛えるために批判的視点を徹底してください。300〜400文字程度。`,
+  },
+  {
+    id:'citizen', icon:'👤', color:'#4ea8ff', label:'一般市民',
+    desc:'現実の生活視点・庶民の声',
+    system:`あなたは特別な専門知識を持たない一般市民です。
+このテーマが「実際の日常生活」にどう影響するかを具体的に述べてください。
+難しい理論より、現場のリアルな実感・家計・仕事・子育てなどの生活視点を大切にしてください。300〜400文字程度。`,
+  },
+  {
+    id:'stats', icon:'📊', color:'#f472b6', label:'統計学者',
+    desc:'数値・確率・トレンドで分析する',
+    system:`あなたは統計学者です。
+このテーマに関連する統計的傾向、確率、データの読み方、相関と因果の違いを意識した分析を行ってください。
+「数字の罠」や「サンプルバイアス」にも言及し、データリテラシーの観点から意見を述べてください。300〜400文字程度。`,
+  },
+  {
+    id:'optimist', icon:'✨', color:'#f5c842', label:'楽観派',
+    desc:'可能性・希望・ポジティブな未来',
+    system:`あなたは楽観的な未来思考者です。
+このテーマの「ポジティブな可能性」「解決策」「希望」に焦点を当てて意見を述べてください。
+問題点は認めつつも、それを乗り越える方法や明るい展望を積極的に示してください。300〜400文字程度。`,
+  },
 ];
 
+const OR_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const KS = 'tenbin_key';
 let busy = false;
 
-// ────────────────────────────────────
-// APIキー管理
-// ────────────────────────────────────
-const lk = () => localStorage.getItem(KEY_STORE) || '';
+// ── APIキー ──
+const lk = () => localStorage.getItem(KS) || '';
 function saveKey() {
   const v = document.getElementById('ki').value.trim();
   if (!v) { ss('キーを入力してください','warn'); return; }
   if (!v.startsWith('sk-or-')) { ss('"sk-or-" から始まるキーを入力してください','warn'); return; }
-  localStorage.setItem(KEY_STORE, v);
-  ss('✓ 保存しました！','ok');
+  localStorage.setItem(KS, v); ss('✓ 保存しました！','ok');
 }
 function ss(m,c){ const e=document.getElementById('ks'); e.textContent=m; e.className='ks '+(c||''); }
 
-// ────────────────────────────────────
-// 役割UI生成
-// ────────────────────────────────────
+// ── 役割カードUI ──
 function buildRoles() {
-  const grid = document.getElementById('rolesGrid');
-  grid.innerHTML = '';
-  DEFAULT_ROLES.forEach(r => {
+  const g = document.getElementById('rolesGrid');
+  g.innerHTML = '';
+  ROLES.forEach(r => {
     const el = document.createElement('div');
-    el.className = 'role-card';
-    el.style.setProperty('--rc', r.color);
+    el.className = 'rc';
+    el.style.setProperty('--role-c', r.color);
     el.innerHTML = `
-      <div class="role-header">
-        <span class="role-icon" style="color:${r.color}">${r.icon}</span>
-        <span class="role-name" style="color:${r.color}">${r.label}</span>
+      <div class="rc-head">
+        <span class="rc-icon">${r.icon}</span>
+        <span class="rc-name" style="color:${r.color}">${r.label}</span>
       </div>
-      <input class="role-input" id="role_${r.id}" value="${r.label}"
-        placeholder="${r.label}" style="--rc:${r.color}">`;
-    grid.appendChild(el);
+      <div class="rc-desc">${r.desc}</div>`;
+    g.appendChild(el);
   });
-  // 審判スロット
-  const judgeEl = document.createElement('div');
-  judgeEl.className = 'role-card';
-  judgeEl.style.setProperty('--rc', '#f5c842');
-  judgeEl.innerHTML = `
-    <div class="role-header">
-      <span class="role-icon" style="color:#f5c842">⚖️</span>
-      <span class="role-name" style="color:#f5c842">審判</span>
+  // 審判カード
+  const judge = document.createElement('div');
+  judge.className = 'rc';
+  judge.style.setProperty('--role-c','#f5c842');
+  judge.innerHTML = `
+    <div class="rc-head">
+      <span class="rc-icon">⚖️</span>
+      <span class="rc-name" style="color:#f5c842">審判</span>
     </div>
-    <div style="font-family:'Syne',sans-serif;font-size:10px;color:var(--mt);line-height:1.6;">
-      3者の意見を読んで<br>最終結論を自動生成
-    </div>`;
-  grid.appendChild(judgeEl);
+    <div class="rc-desc">全員の意見を総合して<br>ひとつの最終結論を出す</div>`;
+  g.appendChild(judge);
 }
 
-// ────────────────────────────────────
-// 進捗管理
-// ────────────────────────────────────
-function setProgress(pct, label) {
-  document.getElementById('pf').style.width = pct + '%';
-  document.getElementById('pl').textContent = label;
-}
+// ── フェーズ・進捗 ──
 function setPhase(n) {
   ['pd1','pd2','pd3'].forEach((id,i) => {
     const el = document.getElementById(id);
@@ -495,72 +399,94 @@ function setPhase(n) {
     if (i+1 === n) el.classList.add('active');
   });
 }
+function setProg(pct, label) {
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('pl').textContent = label;
+}
 
-// ────────────────────────────────────
-// API呼び出し
-// ────────────────────────────────────
-async function callAI(systemPrompt, userPrompt, key) {
+// ── API呼び出し ──
+async function callAI(system, user, key) {
   const res = await fetch(OR_URL, {
     method: 'POST',
     headers: {
       'Authorization': 'Bearer ' + key,
       'Content-Type': 'application/json',
       'HTTP-Referer': location.href,
-      'X-Title': 'TENBIN AI Debate',
+      'X-Title': 'TENBIN AI',
     },
     body: JSON.stringify({
       model: 'openrouter/free',
       messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
+        { role:'system', content:system },
+        { role:'user', content:user },
       ],
     }),
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await res.json().catch(()=>({}));
     throw new Error(res.status + ': ' + (err?.error?.message || res.statusText));
   }
-  const data = await res.json();
-  return {
-    text: data?.choices?.[0]?.message?.content || '（空の回答）',
-    model: data?.model || 'openrouter/free',
-  };
+  const d = await res.json();
+  return { text: d?.choices?.[0]?.message?.content || '（空の回答）', model: d?.model || 'auto' };
 }
 
-// ────────────────────────────────────
-// 議論カード生成
-// ────────────────────────────────────
-function buildDebateCard(r) {
+// ── カード生成 ──
+function buildCard(r) {
   const card = document.createElement('div');
-  card.className = 'dcard fi';
+  card.className = 'dcard fi pending';
   card.id = 'dc_' + r.id;
   card.style.setProperty('--rc', r.color);
-  const label = document.getElementById('role_'+r.id)?.value || r.label;
   card.innerHTML = `
-    <div class="dcard-header">
-      <span class="dcard-icon">${r.icon}</span>
-      <span class="dcard-name">${label}</span>
-      <span class="dcard-model" id="dm_${r.id}">回答待ち...</span>
-      <span class="dcard-spinner" id="ds_${r.id}"></span>
+    <div class="dh">
+      <span class="di">${r.icon}</span>
+      <span class="dn">${r.label}</span>
+      <span class="dm" id="dm_${r.id}">待機中</span>
+      <span class="dsp" id="dsp_${r.id}" style="display:none"></span>
     </div>
-    <div class="dcard-body" id="db_${r.id}">
-      <div class="sk">
-        ${[100,78,88,65,72].map(w=>`<div class="sl" style="width:${w}%"></div>`).join('')}
-      </div>
+    <div class="db" id="db_${r.id}">
+      <div class="waiting">待機中...</div>
     </div>`;
   return card;
 }
 
-function typewrite(el, text, speed=5) {
+// ── タイプライター ──
+function tw(el, text, speed=5) {
   const p = document.createElement('p');
   el.innerHTML = ''; el.appendChild(p);
   let i = 0;
   const t = setInterval(() => { p.textContent = text.slice(0,++i); if(i>=text.length) clearInterval(t); }, speed);
 }
 
-// ────────────────────────────────────
-// メイン議論フロー
-// ────────────────────────────────────
+// ── 1役呼び出し ──
+async function callRole(r, topic, key) {
+  const card = document.getElementById('dc_'+r.id);
+  const body = document.getElementById('db_'+r.id);
+  const spin = document.getElementById('dsp_'+r.id);
+  const modelTag = document.getElementById('dm_'+r.id);
+
+  card.classList.remove('pending');
+  card.classList.add('loading');
+  spin.style.display = 'inline-block';
+  body.innerHTML = `<div class="sk">${[100,78,88,65,72].map(w=>`<div class="sl" style="width:${w}%"></div>`).join('')}</div>`;
+
+  try {
+    const user = `議論テーマ：「${topic}」\n\nあなたの役割・立場から意見を述べてください。`;
+    const result = await callAI(r.system, user, key);
+    card.classList.remove('loading'); card.classList.add('done');
+    spin.style.display = 'none';
+    modelTag.textContent = result.model.split('/').pop();
+    tw(body, result.text);
+    return { role:r.label, icon:r.icon, text:result.text };
+  } catch(e) {
+    card.classList.remove('loading');
+    spin.style.display = 'none';
+    modelTag.textContent = 'エラー';
+    body.innerHTML = `<div class="er">⚠ ${e.message}</div>`;
+    return { role:r.label, icon:r.icon, text:`（${r.label}はエラーにより意見なし）` };
+  }
+}
+
+// ── メインフロー ──
 async function startDebate() {
   if (busy) return;
   const key = lk();
@@ -572,141 +498,111 @@ async function startDebate() {
   document.getElementById('startBtn').disabled = true;
   document.getElementById('startBtn').textContent = '議論中...';
   document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('arena').style.display = 'block';
 
-  const arena = document.getElementById('arena');
-  arena.style.display = 'block';
-  const debateGrid = document.getElementById('debateGrid');
-  debateGrid.innerHTML = '';
+  const grid = document.getElementById('debateGrid');
+  grid.innerHTML = '';
+  ROLES.forEach(r => grid.appendChild(buildCard(r)));
 
-  // カード生成
-  DEFAULT_ROLES.forEach(r => debateGrid.appendChild(buildDebateCard(r)));
-
-  // フェーズ1開始
   setPhase(1);
-  setProgress(10, '各AIが議論を開始しています...');
+  setProg(5, '議論を開始します...');
 
-  // ── フェーズ1: 1つずつ順番に議論（429対策）──
-  const debateResults = [];
-
-  for (let i = 0; i < DEFAULT_ROLES.length; i++) {
-    const r = DEFAULT_ROLES[i];
-    const card = document.getElementById('dc_'+r.id);
-    const body = document.getElementById('db_'+r.id);
-    card.classList.add('loading');
-    setProgress(10 + Math.round(i/DEFAULT_ROLES.length * 55), `${r.icon} ${r.label} が意見を述べています... (${i+1}/${DEFAULT_ROLES.length})`);
-    try {
-      const system = r.stance;
-      const user = `議論テーマ：「${topic}」\n\n上記テーマについて、あなたの立場から300〜500文字程度で意見を述べてください。`;
-      const result = await callAI(system, user, key);
-      card.classList.remove('loading'); card.classList.add('done');
-      document.getElementById('ds_'+r.id)?.remove();
-      const label = document.getElementById('role_'+r.id)?.value || r.label;
-      document.getElementById('dm_'+r.id).textContent = result.model.split('/').pop();
-      typewrite(body, result.text);
-      debateResults.push({ role: label, icon: r.icon, text: result.text });
-    } catch(e) {
-      card.classList.remove('loading');
-      document.getElementById('ds_'+r.id)?.remove();
-      document.getElementById('dm_'+r.id).textContent = 'エラー';
-      body.innerHTML = `<div class="er">⚠ ${e.message}</div>`;
-      debateResults.push({ role: r.label, icon: r.icon, text: `（エラーのため意見なし）` });
-    }
-    // 次のリクエストまで少し待機（レート制限対策）
-    if (i < DEFAULT_ROLES.length - 1) await new Promise(res => setTimeout(res, 1500));
+  // ── フェーズ1: 6役を1つずつ順番に（429対策）──
+  const results = [];
+  for (let i = 0; i < ROLES.length; i++) {
+    const r = ROLES[i];
+    setProg(5 + Math.round((i / ROLES.length) * 60), `${r.icon} ${r.label} が意見を述べています... (${i+1}/${ROLES.length})`);
+    const res = await callRole(r, topic, key);
+    results.push(res);
+    // レート制限対策：次のリクエストまで2秒待機
+    if (i < ROLES.length - 1) await new Promise(ok => setTimeout(ok, 2000));
   }
 
-  // ── フェーズ2: 審判AI ──
+  setProg(70, '⚖️ 審判AIが全意見を分析中...');
   setPhase(2);
-  setProgress(70, '審判AIが全意見を分析中...');
 
+  // ── フェーズ2: 審判AI ──
   const judgeTitle = document.getElementById('judgeTitle');
-  const judgePanel = document.getElementById('judgePanel');
+  const judgeWrap = document.getElementById('judgeWrap');
   judgeTitle.style.display = 'flex';
-  judgePanel.style.display = 'block';
-  judgePanel.classList.add('active','ji');
-  document.getElementById('judgeSpin').style.display = 'inline-block';
+  judgeWrap.style.display = 'block';
+  judgeWrap.classList.add('active','ji');
+  document.getElementById('jspin').style.display = 'inline-block';
 
-  // 全意見をまとめたプロンプト構築
-  const opinionsText = debateResults.map(r =>
-    `【${r.icon} ${r.role}の意見】\n${r.text}`
-  ).join('\n\n---\n\n');
+  // 全意見を1つのテキストに集約
+  const allOpinions = results.map(r =>
+    `━━━━━━━━━━━━━━━━━━\n${r.icon}【${r.role}】\n${r.text}`
+  ).join('\n\n');
 
-  const judgeSystem = `あなたは公正な議論の審判者です。複数の論者の意見を読み、以下の形式で最終結論を出してください：
+  const judgeSystem = `あなたは公正で知性的な議論の審判者です。
+6名の異なる立場からの意見を読み、以下の構造で最終結論をまとめてください。
 
-【各意見の要点整理】
-各論者の主要な主張を1〜2文でまとめる
+■ 各意見の核心（各1〜2文で要約）
+■ 主要な対立点・論点の整理
+■ 事実・データ面での評価（ファクトチェッカー・統計学者の主張を特に参照）
+■ 総合評価（どの視点が最も重要か）
+■ 最終結論（テーマに対する明確な一つの答えを、理由とともに提示）
 
-【議論の核心】
-この議論の最も重要な対立点や論点を指摘する
+偏らず、論理的に。最終的には「結論としては〜」という形で一文で締めくくること。`;
 
-【総合評価】
-どの意見が最も説得力があり、なぜそうなのかを論じる
-
-【最終結論】
-テーマに対する最終的な答えを、根拠とともに明確に述べる
-
-公平で論理的な視点から判断してください。`;
-
-  const judgeUser = `議論テーマ：「${topic}」\n\n以下の3者の意見を踏まえて、最終結論を出してください：\n\n${opinionsText}`;
+  const judgeUser = `議論テーマ：「${topic}」\n\n以下の6名の意見を踏まえて最終結論を出してください：\n\n${allOpinions}`;
 
   try {
     const judgeResult = await callAI(judgeSystem, judgeUser, key);
-    document.getElementById('judgeSpin').style.display = 'none';
+    document.getElementById('jspin').style.display = 'none';
     document.getElementById('judgeModel').textContent = judgeResult.model.split('/').pop();
-    const jb = document.getElementById('judgeBody');
-    typewrite(jb, judgeResult.text, 6);
+
+    // 最終結論を目立つブロックで表示
+    const jbody = document.getElementById('jbody');
+    jbody.innerHTML = '';
+    const verdict = document.createElement('div');
+    verdict.className = 'verdict';
+    verdict.innerHTML = `<div class="verdict-label">最終結論</div>`;
+    const p = document.createElement('p');
+    verdict.appendChild(p);
+    jbody.appendChild(verdict);
+    // タイプライター
+    let i = 0;
+    const text = judgeResult.text;
+    const t = setInterval(() => { p.textContent = text.slice(0,++i); if(i>=text.length) clearInterval(t); }, 6);
+
     setPhase(3);
-    setProgress(100, '✓ 議論完了 — 審判AIによる結論が出ました');
+    setProg(100, '✓ 議論完了 — 審判AIによる最終結論が出ました');
   } catch(e) {
-    document.getElementById('judgeSpin').style.display = 'none';
-    document.getElementById('judgeBody').innerHTML = `<div class="er">⚠ 審判AIエラー: ${e.message}</div>`;
-    setProgress(100, '議論完了（審判エラーあり）');
+    document.getElementById('jspin').style.display = 'none';
+    document.getElementById('jbody').innerHTML = `<div class="er" style="margin:20px">⚠ 審判エラー: ${e.message}<br><br>しばらく待ってから「↺ リセット」して再試行してください。</div>`;
+    setProg(100, '議論完了（審判でエラー発生）');
   }
 
   busy = false;
   document.getElementById('startBtn').disabled = false;
   document.getElementById('startBtn').textContent = '⚡ 再議論';
 
-  // 審判パネルまでスクロール
-  setTimeout(() => {
-    judgePanel.scrollIntoView({ behavior:'smooth', block:'start' });
-  }, 500);
+  setTimeout(() => judgeWrap.scrollIntoView({ behavior:'smooth', block:'start' }), 600);
 }
 
-// ────────────────────────────────────
-// リセット
-// ────────────────────────────────────
+// ── リセット ──
 function resetAll() {
   if (busy) return;
   document.getElementById('topic').value = '';
   document.getElementById('arena').style.display = 'none';
   document.getElementById('emptyState').style.display = 'flex';
   document.getElementById('judgeTitle').style.display = 'none';
-  document.getElementById('judgePanel').style.display = 'none';
-  document.getElementById('judgePanel').classList.remove('active','ji');
-  document.getElementById('judgeBody').innerHTML = `
-    <div class="judge-waiting">
-      <div class="waiting-dots"><span></span><span></span><span></span></div>
-      <div class="judge-waiting-text">全AIの議論完了を待っています...</div>
-    </div>`;
+  const jw = document.getElementById('judgeWrap');
+  jw.style.display = 'none'; jw.classList.remove('active','ji');
+  document.getElementById('jbody').innerHTML = `<div class="j-waiting"><div class="j-wait-dots"><span></span><span></span><span></span></div><div class="j-wait-text">全メンバーの議論完了を待っています...</div></div>`;
   document.getElementById('judgeModel').textContent = '待機中';
   document.getElementById('startBtn').textContent = '⚡ 議論スタート';
-  setProgress(0,'');
-  setPhase(0);
+  setPhase(0); setProg(0,'');
 }
 
-// ────────────────────────────────────
-// 初期化
-// ────────────────────────────────────
-(function init() {
-  const saved = lk();
-  if (saved) { document.getElementById('ki').value = saved; ss('✓ 設定済み','ok'); }
+// ── 初期化 ──
+(function(){
+  const s = lk();
+  if (s) { document.getElementById('ki').value = s; ss('✓ 設定済み','ok'); }
   buildRoles();
 })();
-
-document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') startDebate();
-});
+document.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key==='Enter') startDebate(); });
 </script>
 </body>
 </html>
