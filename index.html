@@ -585,14 +585,15 @@ async function startDebate() {
   setPhase(1);
   setProgress(10, '各AIが議論を開始しています...');
 
-  // ── フェーズ1: 3者同時に議論 ──
+  // ── フェーズ1: 1つずつ順番に議論（429対策）──
   const debateResults = [];
-  let doneCount = 0;
 
-  await Promise.all(DEFAULT_ROLES.map(async (r) => {
+  for (let i = 0; i < DEFAULT_ROLES.length; i++) {
+    const r = DEFAULT_ROLES[i];
     const card = document.getElementById('dc_'+r.id);
     const body = document.getElementById('db_'+r.id);
     card.classList.add('loading');
+    setProgress(10 + Math.round(i/DEFAULT_ROLES.length * 55), `${r.icon} ${r.label} が意見を述べています... (${i+1}/${DEFAULT_ROLES.length})`);
     try {
       const system = r.stance;
       const user = `議論テーマ：「${topic}」\n\n上記テーマについて、あなたの立場から300〜500文字程度で意見を述べてください。`;
@@ -608,11 +609,11 @@ async function startDebate() {
       document.getElementById('ds_'+r.id)?.remove();
       document.getElementById('dm_'+r.id).textContent = 'エラー';
       body.innerHTML = `<div class="er">⚠ ${e.message}</div>`;
-      debateResults.push({ role: r.label, icon: r.icon, text: `（エラーのため意見なし: ${e.message}）` });
+      debateResults.push({ role: r.label, icon: r.icon, text: `（エラーのため意見なし）` });
     }
-    doneCount++;
-    setProgress(10 + Math.round(doneCount/DEFAULT_ROLES.length * 55), `${doneCount}/${DEFAULT_ROLES.length} 完了`);
-  }));
+    // 次のリクエストまで少し待機（レート制限対策）
+    if (i < DEFAULT_ROLES.length - 1) await new Promise(res => setTimeout(res, 1500));
+  }
 
   // ── フェーズ2: 審判AI ──
   setPhase(2);
