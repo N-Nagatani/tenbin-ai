@@ -6,173 +6,188 @@
 <title>TENBIN AI – 無料マルチAI比較</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #07080f; --surface: #0e0f1a; --border: #1c1d2e;
-    --text: #d8daf0; --muted: #44465a;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Noto Serif JP', serif; min-height: 100vh; }
-  body::before {
-    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  :root { --bg:#07080f; --surface:#0e0f1a; --border:#1c1d2e; --text:#d8daf0; --muted:#44465a; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--bg); color:var(--text); font-family:'Noto Serif JP',serif; min-height:100vh; }
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
     background:
-      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(123,108,255,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 60% at 80% 80%, rgba(67,233,123,0.05) 0%, transparent 60%);
+      radial-gradient(ellipse 80% 50% at 20% 20%,rgba(123,108,255,.07) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 60% at 80% 80%,rgba(67,233,123,.05) 0%,transparent 60%);
+  }
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(7,8,15,.93); backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:14px 28px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo-mark{
+    font-family:'Syne',sans-serif; font-weight:800; font-size:20px; letter-spacing:4px;
+    background:linear-gradient(100deg,#7b6cff,#43e97b);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .logo-sub{ font-family:'Syne',sans-serif; font-size:10px; letter-spacing:2px; color:var(--muted); margin-top:2px; }
+  .free-badge{
+    padding:6px 14px; background:rgba(67,233,123,.07);
+    border:1px solid rgba(67,233,123,.3); border-radius:20px;
+    font-family:'Syne',sans-serif; font-size:11px; color:#43e97b; letter-spacing:1px;
+  }
+  .setup-panel{ position:relative; z-index:1; max-width:820px; margin:24px auto 0; padding:0 24px; }
+  .setup-box{
+    background:var(--surface); border:1px solid rgba(123,108,255,.3);
+    border-radius:16px; padding:24px 28px;
+  }
+  .setup-title{
+    font-family:'Syne',sans-serif; font-weight:800; font-size:14px;
+    letter-spacing:3px; color:#7b6cff; margin-bottom:16px;
+  }
+  .steps{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .step{ display:flex; align-items:center; gap:12px; font-family:'Syne',sans-serif; font-size:12px; color:var(--text); letter-spacing:.5px; }
+  .step-num{
+    width:24px; height:24px; border-radius:50%;
+    background:rgba(123,108,255,.2); border:1px solid #7b6cff;
+    color:#7b6cff; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .step a{ color:#43e97b; text-decoration:none; border-bottom:1px solid rgba(67,233,123,.4); }
+  .key-input-row{ display:flex; gap:10px; }
+  .key-input{
+    flex:1; padding:12px 16px; background:#0a0b14;
+    border:1px solid var(--border); border-radius:10px;
+    color:var(--text); font-family:'Syne',sans-serif; font-size:13px; outline:none;
+    transition:border-color .3s,box-shadow .3s;
+  }
+  .key-input:focus{ border-color:#7b6cff; box-shadow:0 0 0 3px rgba(123,108,255,.15); }
+  .key-input::placeholder{ color:var(--muted); }
+  .btn-save{
+    padding:12px 22px; background:linear-gradient(135deg,#7b6cff,#5e8bff);
+    border:none; border-radius:10px; color:#fff;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:12px; letter-spacing:2px;
+    cursor:pointer; transition:all .22s; white-space:nowrap;
+  }
+  .btn-save:hover{ transform:translateY(-1px); box-shadow:0 6px 20px rgba(123,108,255,.4); }
+  .key-status{ font-family:'Syne',sans-serif; font-size:11px; margin-top:8px; letter-spacing:1px; min-height:18px; }
+  .key-status.ok{ color:#43e97b; }
+  .key-status.warn{ color:#f7c948; }
+
+  /* ── スロット設定 ── */
+  .slots-panel{ position:relative; z-index:1; max-width:820px; margin:16px auto 0; padding:0 24px; }
+  .slots-box{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px 24px;
+  }
+  .slots-title{
+    font-family:'Syne',sans-serif; font-size:11px; letter-spacing:3px; color:var(--muted);
+    text-transform:uppercase; margin-bottom:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .slots-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:600px){ .slots-grid{ grid-template-columns:1fr; } }
+  .slot{
+    display:flex; flex-direction:column; gap:6px;
+    padding:14px 16px; background:#0a0b14;
+    border:1px solid var(--border); border-radius:10px; transition:border-color .3s;
+  }
+  .slot:focus-within{ border-color:#7b6cff; }
+  .slot-label{
+    font-family:'Syne',sans-serif; font-size:10px; letter-spacing:2px;
+    color:var(--muted); text-transform:uppercase;
+    display:flex; align-items:center; gap:6px;
+  }
+  .slot-dot{ width:6px; height:6px; border-radius:50%; }
+  .slot-input{
+    background:transparent; border:none; outline:none;
+    color:var(--text); font-family:'Syne',sans-serif; font-size:12px;
+    letter-spacing:1px; width:100%;
+  }
+  .slot-input::placeholder{ color:#2a2b3e; }
+  .slot-note{ font-family:'Syne',sans-serif; font-size:10px; color:#2a2b3e; letter-spacing:.5px; }
+
+  .input-zone{ position:relative; z-index:1; max-width:820px; margin:16px auto 0; padding:0 24px; }
+  .input-label{ font-family:'Syne',sans-serif; font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
+  textarea#prompt{
+    width:100%; min-height:100px; padding:18px 20px;
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    color:var(--text); font-family:'Noto Serif JP',serif; font-size:15px; line-height:1.7;
+    resize:none; outline:none; transition:border-color .3s,box-shadow .3s;
+  }
+  textarea#prompt:focus{ border-color:#7b6cff; box-shadow:0 0 0 3px rgba(123,108,255,.15); }
+  textarea#prompt::placeholder{ color:var(--muted); }
+  .actions{ display:flex; gap:10px; margin-top:12px; align-items:center; }
+  .btn-send{
+    padding:13px 28px; background:linear-gradient(135deg,#7b6cff,#5e8bff);
+    border:none; border-radius:10px; color:#fff;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:13px; letter-spacing:2px;
+    cursor:pointer; transition:all .25s; box-shadow:0 4px 20px rgba(123,108,255,.3);
+  }
+  .btn-send:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 8px 28px rgba(123,108,255,.45); }
+  .btn-send:disabled{ opacity:.35; cursor:not-allowed; transform:none; }
+  .btn-clear{
+    padding:13px 18px; background:transparent; border:1px solid var(--border);
+    border-radius:10px; color:var(--muted);
+    font-family:'Syne',sans-serif; font-size:12px; cursor:pointer; transition:all .2s;
+  }
+  .btn-clear:hover{ border-color:#ff6b6b; color:#ff6b6b; }
+  .hint{ margin-left:auto; font-size:11px; color:var(--muted); font-family:'Syne',sans-serif; }
+
+  .grid{
+    position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:18px;
+    max-width:1260px; margin:24px auto 48px; padding:0 24px;
+  }
+  @media(max-width:760px){ .grid{ grid-template-columns:1fr; } .hint{ display:none; } }
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    overflow:hidden; display:flex; flex-direction:column; min-height:220px;
+    transition:border-color .4s,box-shadow .4s;
+  }
+  .card.loading{ border-color:var(--c); box-shadow:0 0 24px color-mix(in srgb,var(--c) 18%,transparent); }
+  .card.done{ border-color:color-mix(in srgb,var(--c) 45%,transparent); }
+  .card-header{
+    padding:16px 20px 12px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:8px;
+  }
+  .card-icon{ font-size:17px; color:var(--c); filter:drop-shadow(0 0 5px var(--c)); }
+  .card-name{ font-family:'Syne',sans-serif; font-weight:800; font-size:12px; letter-spacing:3px; color:var(--c); text-transform:uppercase; }
+  .card-model-used{
+    margin-left:auto; font-family:'Syne',sans-serif; font-size:9px;
+    color:var(--muted); background:rgba(255,255,255,.03);
+    padding:2px 7px; border-radius:4px; border:1px solid var(--border);
+    max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .spinner{ width:7px; height:7px; border-radius:50%; background:var(--c); animation:pulse 1s infinite; margin-left:4px; }
+  .card-body{ padding:18px 20px; flex:1; overflow-y:auto; max-height:360px; }
+  .card-body p{ font-size:14px; line-height:1.85; color:#a8aac8; white-space:pre-wrap; }
+  .card-body .err{
+    color:#ff8080; font-family:'Syne',sans-serif; font-size:12px; line-height:1.8;
+    background:rgba(255,100,100,.07); border:1px solid rgba(255,100,100,.2);
+    border-radius:8px; padding:12px 14px;
+  }
+  .skel{ display:flex; flex-direction:column; gap:9px; }
+  .skel-line{
+    height:9px; border-radius:5px;
+    background:linear-gradient(90deg,#1c1d2e 25%,#252636 50%,#1c1d2e 75%);
+    background-size:200% 100%; animation:shimmer 1.6s infinite;
   }
 
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(7,8,15,0.93); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+  .empty{
+    position:relative; z-index:1; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; padding:48px 24px; text-align:center;
   }
-  .logo-mark {
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 4px;
-    background: linear-gradient(100deg, #7b6cff, #43e97b);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .logo-sub { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--muted); margin-top: 2px; }
-  .free-badge {
-    padding: 6px 14px; background: rgba(67,233,123,0.07);
-    border: 1px solid rgba(67,233,123,0.3); border-radius: 20px;
-    font-family: 'Syne', sans-serif; font-size: 11px; color: #43e97b; letter-spacing: 1px;
-  }
+  .empty-icons{ font-size:28px; display:flex; gap:14px; margin-bottom:14px; }
+  .empty-icons span{ animation:float 3s ease-in-out infinite; }
+  .empty-icons span:nth-child(2){ animation-delay:.4s; }
+  .empty-icons span:nth-child(3){ animation-delay:.8s; }
+  .empty-icons span:nth-child(4){ animation-delay:1.2s; }
+  .empty-text{ font-family:'Syne',sans-serif; font-size:12px; letter-spacing:2px; color:var(--muted); }
 
-  .setup-panel { position: relative; z-index: 1; max-width: 820px; margin: 24px auto 0; padding: 0 24px; }
-  .setup-box {
-    background: var(--surface); border: 1px solid rgba(123,108,255,0.3);
-    border-radius: 16px; padding: 24px 28px;
-  }
-  .setup-title {
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px;
-    letter-spacing: 3px; color: #7b6cff; margin-bottom: 16px;
-  }
-  .steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .step { display: flex; align-items: center; gap: 12px; font-family: 'Syne', sans-serif; font-size: 12px; color: var(--text); letter-spacing: 0.5px; }
-  .step-num {
-    width: 24px; height: 24px; border-radius: 50%;
-    background: rgba(123,108,255,0.2); border: 1px solid #7b6cff;
-    color: #7b6cff; font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .step a { color: #43e97b; text-decoration: none; border-bottom: 1px solid rgba(67,233,123,0.4); }
-  .key-input-row { display: flex; gap: 10px; }
-  .key-input {
-    flex: 1; padding: 12px 16px; background: #0a0b14;
-    border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text); font-family: 'Syne', sans-serif; font-size: 13px; outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  .key-input:focus { border-color: #7b6cff; box-shadow: 0 0 0 3px rgba(123,108,255,0.15); }
-  .key-input::placeholder { color: var(--muted); }
-  .btn-save {
-    padding: 12px 22px; background: linear-gradient(135deg, #7b6cff, #5e8bff);
-    border: none; border-radius: 10px; color: #fff;
-    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px;
-    cursor: pointer; transition: all 0.22s; white-space: nowrap;
-  }
-  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(123,108,255,0.4); }
-  .key-status { font-family: 'Syne', sans-serif; font-size: 11px; margin-top: 8px; letter-spacing: 1px; min-height: 18px; }
-  .key-status.ok { color: #43e97b; }
-  .key-status.warn { color: #f7c948; }
-
-  .model-selector {
-    position: relative; z-index: 1; max-width: 820px; margin: 16px auto 0; padding: 0 24px;
-    display: flex; gap: 8px; flex-wrap: wrap;
-  }
-  .model-toggle {
-    padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
-    background: transparent; color: var(--muted);
-    font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 2px;
-    cursor: pointer; transition: all 0.22s; display: flex; align-items: center; gap: 6px;
-  }
-  .model-toggle .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .model-toggle.on { background: rgba(123,108,255,0.1); border-color: #7b6cff; color: #7b6cff; }
-
-  .input-zone { position: relative; z-index: 1; max-width: 820px; margin: 16px auto 0; padding: 0 24px; }
-  .input-label { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
-  textarea#prompt {
-    width: 100%; min-height: 100px; padding: 18px 20px;
-    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-    color: var(--text); font-family: 'Noto Serif JP', serif; font-size: 15px; line-height: 1.7;
-    resize: none; outline: none; transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  textarea#prompt:focus { border-color: #7b6cff; box-shadow: 0 0 0 3px rgba(123,108,255,0.15); }
-  textarea#prompt::placeholder { color: var(--muted); }
-  .actions { display: flex; gap: 10px; margin-top: 12px; align-items: center; }
-  .btn-send {
-    padding: 13px 28px; background: linear-gradient(135deg, #7b6cff, #5e8bff);
-    border: none; border-radius: 10px; color: #fff;
-    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px;
-    cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 20px rgba(123,108,255,0.3);
-  }
-  .btn-send:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(123,108,255,0.45); }
-  .btn-send:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-  .btn-clear {
-    padding: 13px 18px; background: transparent; border: 1px solid var(--border);
-    border-radius: 10px; color: var(--muted);
-    font-family: 'Syne', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-clear:hover { border-color: #ff6b6b; color: #ff6b6b; }
-  .hint { margin-left: auto; font-size: 11px; color: var(--muted); font-family: 'Syne', sans-serif; }
-
-  .grid {
-    position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
-    max-width: 1260px; margin: 24px auto 48px; padding: 0 24px;
-  }
-  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hint { display: none; } }
-
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-    overflow: hidden; display: flex; flex-direction: column; min-height: 220px;
-    transition: border-color 0.4s, box-shadow 0.4s;
-  }
-  .card.loading { border-color: var(--c); box-shadow: 0 0 24px color-mix(in srgb, var(--c) 18%, transparent); }
-  .card.done { border-color: color-mix(in srgb, var(--c) 45%, transparent); }
-  .card-header {
-    padding: 16px 20px 12px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .card-icon { font-size: 17px; color: var(--c); filter: drop-shadow(0 0 5px var(--c)); }
-  .card-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; color: var(--c); text-transform: uppercase; }
-  .card-model {
-    margin-left: auto; font-family: 'Syne', sans-serif; font-size: 9px;
-    color: var(--muted); background: rgba(255,255,255,0.03);
-    padding: 2px 7px; border-radius: 4px; border: 1px solid var(--border);
-  }
-  .spinner { width: 7px; height: 7px; border-radius: 50%; background: var(--c); animation: pulse 1s infinite; margin-left: 4px; }
-  .card-body { padding: 18px 20px; flex: 1; overflow-y: auto; max-height: 360px; }
-  .card-body p { font-size: 14px; line-height: 1.85; color: #a8aac8; white-space: pre-wrap; }
-  .card-body .err {
-    color: #ff8080; font-family: 'Syne', sans-serif; font-size: 12px; line-height: 1.8;
-    background: rgba(255,100,100,0.07); border: 1px solid rgba(255,100,100,0.2);
-    border-radius: 8px; padding: 12px 14px;
-  }
-  .skel { display: flex; flex-direction: column; gap: 9px; }
-  .skel-line {
-    height: 9px; border-radius: 5px;
-    background: linear-gradient(90deg, #1c1d2e 25%, #252636 50%, #1c1d2e 75%);
-    background-size: 200% 100%; animation: shimmer 1.6s infinite;
-  }
-
-  .empty {
-    position: relative; z-index: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; padding: 48px 24px; text-align: center;
-  }
-  .empty-icons { font-size: 28px; display: flex; gap: 14px; margin-bottom: 14px; }
-  .empty-icons span { animation: float 3s ease-in-out infinite; }
-  .empty-icons span:nth-child(2) { animation-delay: 0.4s; }
-  .empty-icons span:nth-child(3) { animation-delay: 0.8s; }
-  .empty-icons span:nth-child(4) { animation-delay: 1.2s; }
-  .empty-text { font-family: 'Syne', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--muted); }
-
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
-  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-  .fade-in { animation: fadeIn 0.35s ease forwards; }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.2} }
+  @keyframes shimmer{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes fadeIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  .fade-in{ animation:fadeIn .35s ease forwards; }
+  ::-webkit-scrollbar{ width:4px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{ background:var(--border); border-radius:2px; }
 </style>
 </head>
 <body>
@@ -185,13 +200,14 @@
   <div class="free-badge">✓ クレジットカード不要</div>
 </header>
 
+<!-- APIキー設定 -->
 <div class="setup-panel">
   <div class="setup-box">
-    <div class="setup-title">⚙ 初回設定（1回だけ）</div>
+    <div class="setup-title">⚙ APIキー設定（1回だけ）</div>
     <div class="steps">
       <div class="step">
         <span class="step-num">1</span>
-        <span><a href="https://openrouter.ai" target="_blank">openrouter.ai</a> にアクセスしてGoogleアカウントで無料登録（カード不要）</span>
+        <span><a href="https://openrouter.ai" target="_blank">openrouter.ai</a> にアクセスしてGoogleアカウントで無料登録</span>
       </div>
       <div class="step">
         <span class="step-num">2</span>
@@ -210,8 +226,18 @@
   </div>
 </div>
 
-<div class="model-selector" id="modelSelector"></div>
+<!-- スロット設定 -->
+<div class="slots-panel">
+  <div class="slots-box">
+    <div class="slots-title">
+      ⬡ 比較スロット
+      <span style="font-size:10px;color:#3a3b4e;font-weight:400;">（モデル名を変更可 · 空欄で自動選択）</span>
+    </div>
+    <div class="slots-grid" id="slotsGrid"></div>
+  </div>
+</div>
 
+<!-- 入力エリア -->
 <div class="input-zone">
   <div class="input-label">全AIに同時送信するプロンプト</div>
   <textarea id="prompt" placeholder="例：「AIは人間の仕事を奪うか？」について議論してください..."></textarea>
@@ -230,191 +256,193 @@
 <div class="grid" id="grid" style="display:none;"></div>
 
 <script>
-// ─────────────────────────────────────────────────────
-// モデル定義（2025年3月時点で確認済みの有効なモデルID）
-// ─────────────────────────────────────────────────────
-const MODELS = [
-  {
-    id: 'llama',
-    label: 'Llama 3.3',
-    model: 'meta-llama/llama-3.3-70b-instruct:free',
-    icon: '⚡',
-    color: '#ff7c5c',
-    on: true,
-  },
-  {
-    id: 'gemini',
-    label: 'Gemini Flash',
-    model: 'google/gemini-2.0-flash-exp:free',
-    icon: '⬡',
-    color: '#4e9bff',
-    on: true,
-  },
-  {
-    id: 'deepseek',
-    label: 'DeepSeek R1',
-    model: 'deepseek/deepseek-r1:free',
-    icon: '◈',
-    color: '#d4a574',
-    on: true,
-  },
-  {
-    id: 'mistral',
-    label: 'Mistral',
-    model: 'mistralai/mistral-small-3.1-24b-instruct:free',
-    icon: '✦',
-    color: '#a78bfa',
-    on: true,
-  },
+// ─────────────────────────────────────────────────
+// openrouter/free = 有効な無料モデルを自動選択
+// モデル名が廃止されても永久に動き続ける
+// ─────────────────────────────────────────────────
+const DEFAULT_SLOTS = [
+  { id:'s1', label:'AI-1', color:'#ff7c5c', icon:'⚡', model:'openrouter/free' },
+  { id:'s2', label:'AI-2', color:'#4e9bff', icon:'⬡', model:'openrouter/free' },
+  { id:'s3', label:'AI-3', color:'#d4a574', icon:'◈', model:'openrouter/free' },
+  { id:'s4', label:'AI-4', color:'#a78bfa', icon:'✦', model:'openrouter/free' },
 ];
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const STORAGE_KEY = 'tenbin_or_key';
+const KEY_STORE = 'tenbin_or_key';
+const SLOT_STORE = 'tenbin_slots';
 let running = false;
 
-function loadKey() { return localStorage.getItem(STORAGE_KEY) || ''; }
-
-function saveKey() {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  if (!val) { setKeyStatus('キーを入力してください', 'warn'); return; }
-  if (!val.startsWith('sk-or-')) { setKeyStatus('⚠ "sk-or-" から始まるキーを入力してください', 'warn'); return; }
-  localStorage.setItem(STORAGE_KEY, val);
-  setKeyStatus('✓ 保存しました！プロンプトを送信できます', 'ok');
+// ── キー管理 ──
+function loadKey(){ return localStorage.getItem(KEY_STORE)||''; }
+function saveKey(){
+  const v = document.getElementById('apiKeyInput').value.trim();
+  if(!v){ setKeyStatus('キーを入力してください','warn'); return; }
+  if(!v.startsWith('sk-or-')){ setKeyStatus('⚠ "sk-or-" から始まるキーを入力してください','warn'); return; }
+  localStorage.setItem(KEY_STORE, v);
+  setKeyStatus('✓ 保存しました！プロンプトを送信できます','ok');
+}
+function setKeyStatus(msg,cls){
+  const el=document.getElementById('keyStatus');
+  el.textContent=msg; el.className='key-status '+(cls||'');
 }
 
-function setKeyStatus(msg, cls) {
-  const el = document.getElementById('keyStatus');
-  el.textContent = msg;
-  el.className = 'key-status ' + (cls || '');
+// ── スロット管理 ──
+function loadSlots(){
+  try{ return JSON.parse(localStorage.getItem(SLOT_STORE))||DEFAULT_SLOTS; }
+  catch{ return DEFAULT_SLOTS; }
 }
+function saveSlots(slots){ localStorage.setItem(SLOT_STORE,JSON.stringify(slots)); }
 
-(function init() {
-  const saved = loadKey();
-  if (saved) {
-    document.getElementById('apiKeyInput').value = saved;
-    setKeyStatus('✓ APIキーが設定済みです', 'ok');
-    document.getElementById('emptyState').querySelector('.empty-text').textContent
-      = 'プロンプトを入力して送信してください';
-  }
-  buildSelector();
-})();
-
-function buildSelector() {
-  const el = document.getElementById('modelSelector');
-  MODELS.forEach(m => {
-    const btn = document.createElement('button');
-    btn.className = 'model-toggle' + (m.on ? ' on' : '');
-    btn.innerHTML = `<span class="dot"></span>${m.label}`;
-    btn.title = m.model;
-    btn.onclick = () => { m.on = !m.on; btn.classList.toggle('on', m.on); };
-    el.appendChild(btn);
+// ── スロットUI生成 ──
+function buildSlots(){
+  const slots = loadSlots();
+  const grid = document.getElementById('slotsGrid');
+  grid.innerHTML='';
+  slots.forEach((s,i)=>{
+    const el=document.createElement('div');
+    el.className='slot';
+    el.innerHTML=`
+      <div class="slot-label">
+        <span class="slot-dot" style="background:${s.color}"></span>
+        スロット ${i+1}
+      </div>
+      <input class="slot-input" id="slot_model_${s.id}"
+        value="${s.model}"
+        placeholder="openrouter/free（自動選択）">
+      <div class="slot-note">空欄または openrouter/free で自動選択</div>`;
+    grid.appendChild(el);
   });
 }
 
-function buildCard(m) {
-  const card = document.createElement('div');
-  card.className = 'card fade-in';
-  card.id = 'card_' + m.id;
-  card.style.setProperty('--c', m.color);
-  card.innerHTML = `
+function getSlots(){
+  const slots = loadSlots();
+  slots.forEach(s=>{
+    const inp=document.getElementById('slot_model_'+s.id);
+    if(inp) s.model = inp.value.trim()||'openrouter/free';
+  });
+  saveSlots(slots);
+  return slots;
+}
+
+// ── 初期化 ──
+(function init(){
+  const saved=loadKey();
+  if(saved){
+    document.getElementById('apiKeyInput').value=saved;
+    setKeyStatus('✓ APIキーが設定済みです','ok');
+    document.getElementById('emptyState').querySelector('.empty-text').textContent
+      ='プロンプトを入力して送信してください';
+  }
+  buildSlots();
+})();
+
+// ── カード生成 ──
+function buildCard(s, idx){
+  const card=document.createElement('div');
+  card.className='card fade-in';
+  card.id='card_'+s.id;
+  card.style.setProperty('--c',s.color);
+  card.innerHTML=`
     <div class="card-header">
-      <span class="card-icon">${m.icon}</span>
-      <span class="card-name">${m.label}</span>
-      <span class="card-model">${m.model.split('/').pop()}</span>
-      <span class="spinner" id="spin_${m.id}"></span>
+      <span class="card-icon">${s.icon}</span>
+      <span class="card-name">AI-${idx+1}</span>
+      <span class="card-model-used" id="modelUsed_${s.id}">選択中...</span>
+      <span class="spinner" id="spin_${s.id}"></span>
     </div>
-    <div class="card-body" id="body_${m.id}">
+    <div class="card-body" id="body_${s.id}">
       <div class="skel">
-        ${[100,82,91,68,75].map(w => `<div class="skel-line" style="width:${w}%"></div>`).join('')}
+        ${[100,82,91,68,75].map(w=>`<div class="skel-line" style="width:${w}%"></div>`).join('')}
       </div>
     </div>`;
   return card;
 }
 
-function typewrite(el, text, speed = 4) {
-  const p = document.createElement('p');
-  el.innerHTML = '';
-  el.appendChild(p);
-  let i = 0;
-  const t = setInterval(() => { p.textContent = text.slice(0, ++i); if (i >= text.length) clearInterval(t); }, speed);
+// ── タイプライター ──
+function typewrite(el,text,speed=4){
+  const p=document.createElement('p');
+  el.innerHTML=''; el.appendChild(p);
+  let i=0;
+  const t=setInterval(()=>{ p.textContent=text.slice(0,++i); if(i>=text.length) clearInterval(t); },speed);
 }
 
-async function callModel(m, promptText, apiKey) {
-  const body = document.getElementById('body_' + m.id);
-  const card = document.getElementById('card_' + m.id);
+// ── 1スロット呼び出し ──
+async function callSlot(s,promptText,apiKey){
+  const body=document.getElementById('body_'+s.id);
+  const card=document.getElementById('card_'+s.id);
+  const modelTag=document.getElementById('modelUsed_'+s.id);
   card.classList.add('loading');
-  try {
-    const res = await fetch(OPENROUTER_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + apiKey,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': location.href,
-        'X-Title': 'TENBIN AI',
+  try{
+    const res=await fetch(OPENROUTER_URL,{
+      method:'POST',
+      headers:{
+        'Authorization':'Bearer '+apiKey,
+        'Content-Type':'application/json',
+        'HTTP-Referer':location.href,
+        'X-Title':'TENBIN AI',
       },
-      body: JSON.stringify({
-        model: m.model,
-        messages: [{ role: 'user', content: promptText }],
+      body:JSON.stringify({
+        model: s.model||'openrouter/free',
+        messages:[{role:'user',content:promptText}],
       }),
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(`${res.status}: ${err?.error?.message || res.statusText}`);
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      throw new Error(`${res.status}: ${err?.error?.message||res.statusText}`);
     }
-    const data = await res.json();
-    const text = data?.choices?.[0]?.message?.content || '（空の回答）';
+    const data=await res.json();
+    // 実際に使われたモデル名を表示
+    const usedModel=data?.model||s.model;
+    modelTag.textContent=usedModel.split('/').pop();
+    modelTag.title=usedModel;
+
+    const text=data?.choices?.[0]?.message?.content||'（空の回答）';
+    card.classList.remove('loading'); card.classList.add('done');
+    document.getElementById('spin_'+s.id)?.remove();
+    typewrite(body,text);
+  }catch(e){
     card.classList.remove('loading');
-    card.classList.add('done');
-    document.getElementById('spin_' + m.id)?.remove();
-    typewrite(body, text);
-  } catch (e) {
-    card.classList.remove('loading');
-    document.getElementById('spin_' + m.id)?.remove();
-    body.innerHTML = `<div class="err">
-      ⚠ エラー: ${e.message}<br><br>
-      💡 対処法：<br>
-      ① <a href="https://openrouter.ai/keys" target="_blank" style="color:#43e97b">openrouter.ai/keys</a> でキーが有効か確認<br>
-      ② このモデルのトグルをOFFにして他を試す
+    document.getElementById('spin_'+s.id)?.remove();
+    modelTag.textContent='エラー';
+    body.innerHTML=`<div class="err">
+      ⚠ ${e.message}<br><br>
+      💡 <a href="https://openrouter.ai/keys" target="_blank" style="color:#43e97b">openrouter.ai/keys</a> でキーが有効か確認してください
     </div>`;
   }
 }
 
-async function sendAll() {
-  if (running) return;
-  const apiKey = loadKey();
-  if (!apiKey) { setKeyStatus('⚠ まずAPIキーを入力して「保存」してください', 'warn'); return; }
-  const promptText = document.getElementById('prompt').value.trim();
-  if (!promptText) { document.getElementById('prompt').focus(); return; }
-  const active = MODELS.filter(m => m.on);
-  if (!active.length) { alert('モデルを1つ以上ONにしてください'); return; }
+// ── 全スロット送信 ──
+async function sendAll(){
+  if(running) return;
+  const apiKey=loadKey();
+  if(!apiKey){ setKeyStatus('⚠ まずAPIキーを入力して「保存」してください','warn'); return; }
+  const promptText=document.getElementById('prompt').value.trim();
+  if(!promptText){ document.getElementById('prompt').focus(); return; }
+  const slots=getSlots();
 
-  running = true;
-  const btn = document.getElementById('sendBtn');
-  btn.disabled = true;
-  btn.textContent = '送信中...';
+  running=true;
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true; btn.textContent='送信中...';
 
-  document.getElementById('emptyState').style.display = 'none';
-  const grid = document.getElementById('grid');
-  grid.style.display = 'grid';
-  grid.innerHTML = '';
-  active.forEach(m => grid.appendChild(buildCard(m)));
+  document.getElementById('emptyState').style.display='none';
+  const grid=document.getElementById('grid');
+  grid.style.display='grid'; grid.innerHTML='';
+  slots.forEach((s,i)=>grid.appendChild(buildCard(s,i)));
 
-  await Promise.all(active.map(m => callModel(m, promptText, apiKey)));
+  await Promise.all(slots.map(s=>callSlot(s,promptText,apiKey)));
 
-  running = false;
-  btn.disabled = false;
-  btn.textContent = '▶ 全AIに一斉送信';
+  running=false;
+  btn.disabled=false; btn.textContent='▶ 全AIに一斉送信';
 }
 
-function clearAll() {
-  document.getElementById('prompt').value = '';
-  document.getElementById('grid').style.display = 'none';
-  document.getElementById('grid').innerHTML = '';
-  document.getElementById('emptyState').style.display = 'flex';
+function clearAll(){
+  document.getElementById('prompt').value='';
+  document.getElementById('grid').style.display='none';
+  document.getElementById('grid').innerHTML='';
+  document.getElementById('emptyState').style.display='flex';
 }
 
-document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') sendAll();
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter') sendAll();
 });
 </script>
 </body>
